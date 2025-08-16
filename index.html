@@ -1619,15 +1619,29 @@ function initCalendar() {
   const daysContainer = document.getElementById('days-container');
   if (!daysContainer) return;
   
-  const totalDays = 31;
+  // Очищаем контейнер
+  daysContainer.innerHTML = '';
+  
+  // Август 2025 начинается с пятницы (0 - воскресенье, 1 - понедельник и т.д.)
+  const firstDayOfWeek = 5; // Пятница для августа 2025
+  const totalDays = 31; // В августе 31 день
+  
+  // Добавляем пустые ячейки для дней до первого числа месяца
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    const emptyDay = document.createElement('div');
+    daysContainer.appendChild(emptyDay);
+  }
+  
+  // Добавляем дни месяца
   for (let i = 1; i <= totalDays; i++) {
     const day = document.createElement('div');
     day.textContent = i;
     daysContainer.appendChild(day);
   }
   
+  // Подсвечиваем 23 августа
   setTimeout(() => {
-    const day23 = daysContainer.children[22];
+    const day23 = daysContainer.children[22 + firstDayOfWeek]; // 22 (индекс) + 5 (пустых дней)
     if (day23) day23.classList.add('highlight');
   }, 1500);
 }
