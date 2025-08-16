@@ -1622,27 +1622,34 @@ function initCalendar() {
   // Очищаем контейнер
   daysContainer.innerHTML = '';
   
-  // Август 2025 начинается с пятницы (0 - воскресенье, 1 - понедельник и т.д.)
-  const firstDayOfWeek = 5; // Пятница для августа 2025
+  // Август 2025 начинается с пятницы
+  // Пустые ячейки: Пн, Вт, Ср, Чт (4 дня)
+  const emptyCells = 4; 
   const totalDays = 31; // В августе 31 день
   
   // Добавляем пустые ячейки для дней до первого числа месяца
-  for (let i = 0; i < firstDayOfWeek; i++) {
+  for (let i = 0; i < emptyCells; i++) {
     const emptyDay = document.createElement('div');
     daysContainer.appendChild(emptyDay);
   }
   
-  // Добавляем дни месяца
+  // Добавляем дни месяца (1-31 августа)
   for (let i = 1; i <= totalDays; i++) {
     const day = document.createElement('div');
     day.textContent = i;
     daysContainer.appendChild(day);
   }
   
-  // Подсвечиваем 23 августа
+  // Подсвечиваем 23 августа (22 индекс + 4 пустых дня)
   setTimeout(() => {
-    const day23 = daysContainer.children[22 + firstDayOfWeek]; // 22 (индекс) + 5 (пустых дней)
-    if (day23) day23.classList.add('highlight');
+    const highlightIndex = 22 + emptyCells; // 23 августа
+    const day23 = daysContainer.children[highlightIndex];
+    if (day23) {
+      day23.classList.add('highlight');
+      // Проверка дня недели (0-Вс,1-Пн,...,6-Сб)
+      const dayOfWeek = (highlightIndex) % 7;
+      console.log(`23 августа находится в ячейке ${highlightIndex}, день недели: ${dayOfWeek}`);
+    }
   }, 1500);
 }
 
